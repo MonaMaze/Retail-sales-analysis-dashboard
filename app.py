@@ -27,21 +27,10 @@ df = pd.merge(left = df_cust_trans , right = df_prod,
 for i in df.columns[df.isnull().any(axis=0)]: 
     df[i].fillna(df[i].mode()[0], inplace=True)
 df = df.drop_duplicates()
-#def myDateConv(tt):
-#    sep = tt[2]
-#    if sep == '-':
-#        return pd.to_datetime(tt, format='%d-%m-%Y')
-#    elif sep == '/':
-#        return pd.to_datetime(tt, format='%m/%d/%Y')
-#    else:
-#        return tt
-#df.tran_date = df.tran_date.apply(myDateConv)
-#df.DOB = df.DOB.apply(myDateConv)
 df['tran_date'] = pd.to_datetime(df['tran_date'], format="mixed")
 df['trans_year'] =  pd.to_datetime(df['tran_date']).dt.year
 df['trans_month'] =  pd.to_datetime(df['tran_date']).dt.month
 df['DOB'] = pd.to_datetime(df['DOB'], format="mixed")
-#df["DOB"].dt.strftime("%m/%d/%y")
 #df['Age'] = pd.to_datetime(df['tran_date']).dt.year - pd.to_datetime(df['DOB']).dt.year
 df['Age'] = (np.floor((pd.to_datetime(df['tran_date']) - pd.to_datetime(df['DOB'])).dt.days / 365.25)).astype(int)
 df['age_cat'] = pd.cut(df['Age'], 3, labels=['young', 'adult', 'old'])
